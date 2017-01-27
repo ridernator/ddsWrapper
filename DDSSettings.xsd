@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="UnboundedInteger"> 
+      <xs:union> 
+        <xs:simpleType> 
+          <xs:restriction base="xs:integer"/> 
+        </xs:simpleType> 
+        <xs:simpleType> 
+          <xs:restriction base="xs:string"> 
+            <xs:enumeration value="UNBOUNDED"/> 
+          </xs:restriction> 
+        </xs:simpleType> 
+      </xs:union> 
+    </xs:simpleType> 
+    
+   <xs:simpleType name="NotificationType" final="restriction">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Listener" />
+            <xs:enumeration value="Waitset" />                
+        </xs:restriction>
+    </xs:simpleType>
+        
+    <xs:complexType name="Writer">
+        <xs:sequence>
+            <xs:element name="WriterName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="TypeName"   type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="TopicName"  type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSLibrary" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSProfile" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="LoggerName" type="xs:string" minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="Reader">
+        <xs:sequence>
+            <xs:element name="ReaderName"       type="xs:string"        minOccurs="1" maxOccurs="1" />
+            <xs:element name="TypeName"         type="xs:string"        minOccurs="1" maxOccurs="1" />
+            <xs:element name="TopicName"        type="xs:string"        minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSLibrary"       type="xs:string"        minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSProfile"       type="xs:string"        minOccurs="1" maxOccurs="1" />
+            <xs:element name="NotificationType" type="NotificationType" minOccurs="0" maxOccurs="1" />            
+            <xs:element name="LoggerName"       type="xs:string"        minOccurs="0" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="Publisher">
+        <xs:sequence>
+            <xs:element name="PublisherName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSLibrary"    type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSProfile"    type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PartitionName" type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="LoggerName"    type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Writer"        type="Writer"    minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="Subscriber">
+        <xs:sequence>
+            <xs:element name="SubscriberName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSLibrary"     type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSProfile"     type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="PartitionName"  type="xs:string" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="LoggerName"     type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="Reader"         type="Reader"    minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="Requester">
+        <xs:sequence>
+            <xs:element name="RequesterName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="LoggerName"    type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="RequestType"   type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ReplyType"     type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ServiceName"   type="xs:string" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+        
+    <xs:complexType name="Replier">
+        <xs:sequence>
+            <xs:element name="ReplierName" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="LoggerName"  type="xs:string" minOccurs="0" maxOccurs="1" />
+            <xs:element name="RequestType" type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ReplyType"   type="xs:string" minOccurs="1" maxOccurs="1" />
+            <xs:element name="ServiceName" type="xs:string" minOccurs="1" maxOccurs="1" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:complexType name="DomainParticipant">
+        <xs:sequence>
+            <xs:element name="DomainParticipantName" type="xs:string"  minOccurs="1" maxOccurs="1" />
+            <xs:element name="DomainId"              type="xs:int"     minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSLibrary"            type="xs:string"  minOccurs="1" maxOccurs="1" />
+            <xs:element name="QoSProfile"            type="xs:string"  minOccurs="1" maxOccurs="1" />
+            <xs:element name="LoggerName"            type="xs:string"  minOccurs="0" maxOccurs="1" />
+            <xs:element name="Publisher"             type="Publisher"  minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Subscriber"            type="Subscriber" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Requester"             type="Requester"  minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="Replier"               type="Replier"    minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+    </xs:complexType>
+    
+    <xs:element name="DDSSettings">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="LoggerName"              type="xs:string"         minOccurs="1" maxOccurs="1" />
+                <xs:element name="NumberOfThreads"         type="xs:int"            minOccurs="0" maxOccurs="1" />
+                <xs:element name="ThreadPoolLogger"        type="xs:string"         minOccurs="0" maxOccurs="1" />
+                <xs:element name="QoSFile"                 type="xs:string"         minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="DomainParticipant"       type="DomainParticipant" minOccurs="0" maxOccurs="unbounded" />
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

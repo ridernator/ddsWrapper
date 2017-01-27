@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+
+<DDSSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="DDSSettings.xsd">
+    <LoggerName>ddsWrapperLogger</LoggerName>
+    <NumberOfReceiveThreads>0</NumberOfReceiveThreads>
+    <ReceiveThreadPoolLogger>threadPoolLogger</ReceiveThreadPoolLogger>
+
+    <DomainParticipant>
+        <DomainParticipantName>DomainParticipant1</DomainParticipantName>
+        <DomainId>32</DomainId>
+        <QoSLibrary>BuiltinQosLib</QoSLibrary>
+        <QoSProfile>Generic.Common</QoSProfile>
+        <LoggerName>domainParticipant1Logger</LoggerName>
+        
+        <Publisher>            
+            <PublisherName>Publisher1</PublisherName>
+            <QoSLibrary>BuiltinQosLib</QoSLibrary>
+            <QoSProfile>Generic.Common</QoSProfile>
+            <PartitionName>abc</PartitionName>
+            <PartitionName>def</PartitionName>
+            <LoggerName>publisher1Logger</LoggerName>
+            
+            <Writer>
+                <WriterName>BigMessageWriter</WriterName>
+                <TypeName>com.rider.ddswrapper.messages.BigMessage</TypeName>
+                <TopicName>BigMessage</TopicName>
+                <QoSLibrary>BuiltinQosLib</QoSLibrary>
+                <QoSProfile>Generic.Common</QoSProfile>
+                <LoggerName>BigMessageWriterLogger</LoggerName>
+            </Writer>
+        </Publisher>
+        
+        <Subscriber>
+            <SubscriberName>Subscriber1</SubscriberName>
+            <QoSLibrary>BuiltinQosLib</QoSLibrary>
+            <QoSProfile>Generic.Common</QoSProfile>
+            <PartitionName>abc</PartitionName>
+            <LoggerName>subscriber1Logger</LoggerName>
+            
+            <Reader>
+                <ReaderName>BigMessageReader</ReaderName>
+                <TypeName>com.rider.ddswrapper.messages.BigMessage</TypeName>
+                <TopicName>BigMessage</TopicName>
+                <QoSLibrary>BuiltinQosLib</QoSLibrary>
+                <QoSProfile>Generic.Common</QoSProfile>
+                <NotificationType>Waitset</NotificationType>
+                <LoggerName>BigMessageReaderLogger</LoggerName>
+            </Reader>
+        </Subscriber>        
+    </DomainParticipant>        
+</DDSSettings>
