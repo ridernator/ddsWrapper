@@ -1,20 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 
 <xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-    <xs:simpleType name="UnboundedInteger"> 
-      <xs:union> 
-        <xs:simpleType> 
-          <xs:restriction base="xs:integer"/> 
-        </xs:simpleType> 
-        <xs:simpleType> 
-          <xs:restriction base="xs:string"> 
-            <xs:enumeration value="UNBOUNDED"/> 
-          </xs:restriction> 
-        </xs:simpleType> 
-      </xs:union> 
-    </xs:simpleType> 
-    
-   <xs:simpleType name="NotificationType" final="restriction">
+    <xs:simpleType name="NotificationType" final="restriction">
         <xs:restriction base="xs:string">
             <xs:enumeration value="Listener" />
             <xs:enumeration value="Waitset" />                
@@ -108,6 +95,7 @@
                 <xs:element name="ThreadPoolLogger"        type="xs:string"         minOccurs="0" maxOccurs="1" />
                 <xs:element name="QoSFile"                 type="xs:string"         minOccurs="0" maxOccurs="unbounded" />
                 <xs:element name="DomainParticipant"       type="DomainParticipant" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="RandomizeAppId"          type="xs:boolean"        minOccurs="0" maxOccurs="1" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

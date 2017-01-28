@@ -2,8 +2,8 @@
 
 <DDSSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="DDSSettings.xsd">
     <LoggerName>ddsWrapperLogger</LoggerName>
-    <NumberOfReceiveThreads>0</NumberOfReceiveThreads>
-    <ReceiveThreadPoolLogger>threadPoolLogger</ReceiveThreadPoolLogger>
+    <ThreadPoolLogger>threadPoolLogger</ThreadPoolLogger>
+    <NumberOfThreads>0</NumberOfThreads>
 
     <DomainParticipant>
         <DomainParticipantName>DomainParticipant1</DomainParticipantName>

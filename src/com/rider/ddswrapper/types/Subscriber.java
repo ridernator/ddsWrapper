@@ -37,18 +37,18 @@ public class Subscriber {
         ddsSubscriber = domainParticipant.getDDSDomainParticipant().create_subscriber_with_profile(subscriberXML.getQoSLibrary(), subscriberXML.getQoSProfile(), null, StatusKind.STATUS_MASK_NONE);
 
         if (ddsSubscriber == null) {
-            logger.error("Error creating Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionName() + "\")");
+            logger.error("Error creating Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionNames() + "\")");
         } else {
             final SubscriberQos subscriberQoS = new SubscriberQos();
             ddsSubscriber.get_qos(subscriberQoS);
-            for (final String partition : subscriberXML.getPartitionName()) {
+            for (final String partition : subscriberXML.getPartitionNames()) {
                 subscriberQoS.partition.name.add(partition);
             }
             ddsSubscriber.set_qos(subscriberQoS);
 
-            logger.info("Created Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionName() + "\")");
+            logger.info("Created Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionNames() + "\")");
 
-            for (final com.rider.ddswrapper.configuration.Reader readerXML : subscriberXML.getReader()) {
+            for (final com.rider.ddswrapper.configuration.Reader readerXML : subscriberXML.getReaders()) {
                 if (readers.containsKey(readerXML.getReaderName())) {
                     logger.warn("Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + subscriberXML.getSubscriberName() + "\") contains multiple Readers called \"" + readerXML.getReaderName() + "\". Using only the first one");
                 } else {

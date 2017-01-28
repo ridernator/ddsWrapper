@@ -14,14 +14,22 @@ import com.rider.ddswrapper.types.ThreadPool;
 import com.rider.ddswrapper.types.Subscriber;
 import com.rider.ddswrapper.types.Writer;
 import java.io.File;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /**
  *
@@ -79,8 +87,6 @@ public class DDSWrapper {
                     final long startTime = System.currentTimeMillis();
 
                     final Unmarshaller unmarshaller = JAXBContext.newInstance(DDSSettings.class).createUnmarshaller();
-                    unmarshaller.setSchema(SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema").newSchema());
-
                     final DDSSettings ddsSettings = (DDSSettings) unmarshaller.unmarshal(new File(xmlFileName));
 
                     logger = Logger.getLogger(ddsSettings.getLoggerName());
@@ -98,7 +104,7 @@ public class DDSWrapper {
                     initComplete = true;
 
                     logger.trace("startup() took " + (System.currentTimeMillis() - startTime) + "ms");
-                } catch (final JAXBException | SAXException exception) {
+                } catch (final JAXBException exception) {
                     System.err.println("Error parsing \"" + xmlFileName + "\" : " + exception.toString());
                     returnVal = false;
                 }
@@ -201,9 +207,9 @@ public class DDSWrapper {
 
     private void createDomainParticipants(final String xmlFileName,
                                           final DDSSettings ddsSettings) {
-        loadQoSFiles(ddsSettings.getQoSFile());
+        loadQoSFiles(ddsSettings.getQoSFiles());
 
-        for (final com.rider.ddswrapper.configuration.DomainParticipant domainParticipantXML : ddsSettings.getDomainParticipant()) {
+        for (final com.rider.ddswrapper.configuration.DomainParticipant domainParticipantXML : ddsSettings.getDomainParticipants()) {
             if (domainParticipants.containsKey(domainParticipantXML.getDomainParticipantName())) {
                 logger.warn("\"" + xmlFileName + "\" contains multiple DomainParticipants called \"" + domainParticipantXML.getDomainParticipantName() + "\". Using only the first one");
             } else {

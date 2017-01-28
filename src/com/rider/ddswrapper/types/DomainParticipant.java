@@ -50,7 +50,7 @@ public class DomainParticipant {
         } else {
             logger.info("Created DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\",QoSLibrary=\""+domainParticipantXML.getQoSLibrary()+"\",QoSProfile=\""+domainParticipantXML.getQoSProfile()+"\")");
 
-            for (com.rider.ddswrapper.configuration.Publisher publisherXML : domainParticipantXML.getPublisher()) {
+            for (com.rider.ddswrapper.configuration.Publisher publisherXML : domainParticipantXML.getPublishers()) {
                 if (publishers.containsKey(publisherXML.getPublisherName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Publishers called \"" + publisherXML.getPublisherName() + "\". Using only the first one");
                 } else {
@@ -58,7 +58,7 @@ public class DomainParticipant {
                 }
             }
 
-            for (com.rider.ddswrapper.configuration.Subscriber subscriberXML : domainParticipantXML.getSubscriber()) {
+            for (com.rider.ddswrapper.configuration.Subscriber subscriberXML : domainParticipantXML.getSubscribers()) {
                 if (subscribers.containsKey(subscriberXML.getSubscriberName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Subscribers called \"" + subscriberXML.getSubscriberName()+ "\". Using only the first one");
                 } else {
@@ -66,7 +66,7 @@ public class DomainParticipant {
                 }
             }
 
-            for (com.rider.ddswrapper.configuration.Requester requesterXML : domainParticipantXML.getRequester()) {
+            for (com.rider.ddswrapper.configuration.Requester requesterXML : domainParticipantXML.getRequesters()) {
                 if (requesters.containsKey(requesterXML.getRequesterName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Requesters called \"" + requesterXML.getRequesterName()+ "\". Using only the first one");
                 } else {
@@ -74,7 +74,7 @@ public class DomainParticipant {
                 }
             }
 
-            for (com.rider.ddswrapper.configuration.Replier replierXML : domainParticipantXML.getReplier()) {
+            for (com.rider.ddswrapper.configuration.Replier replierXML : domainParticipantXML.getRepliers()) {
                 if (repliers.containsKey(replierXML.getReplierName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Repliers called \"" + replierXML.getReplierName()+ "\". Using only the first one");
                 } else {
