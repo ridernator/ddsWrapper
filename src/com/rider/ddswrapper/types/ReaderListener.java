@@ -26,9 +26,9 @@ public class ReaderListener implements DataReaderListener {
 
     private final ArrayList<Listener> listeners;
     private final Logger logger;
-    private final Class type;
+    private final Class<?> type;
 
-    ReaderListener(final Class type, final Logger logger) {
+    ReaderListener(final Class<?> type, final Logger logger) {
         listeners = new ArrayList<>();
         this.type = type;
         this.logger = logger;

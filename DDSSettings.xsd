@@ -90,12 +90,12 @@
     <xs:element name="DDSSettings">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="LoggerName"              type="xs:string"         minOccurs="1" maxOccurs="1" />
-                <xs:element name="NumberOfThreads"         type="xs:int"            minOccurs="0" maxOccurs="1" />
-                <xs:element name="ThreadPoolLogger"        type="xs:string"         minOccurs="0" maxOccurs="1" />
-                <xs:element name="QoSFile"                 type="xs:string"         minOccurs="0" maxOccurs="unbounded" />
-                <xs:element name="DomainParticipant"       type="DomainParticipant" minOccurs="0" maxOccurs="unbounded" />
-                <xs:element name="RandomizeAppId"          type="xs:boolean"        minOccurs="0" maxOccurs="1" />
+                <xs:element name="LoggerName"        type="xs:string"         minOccurs="1" maxOccurs="1" />
+                <xs:element name="NumberOfThreads"   type="xs:int"            minOccurs="0" maxOccurs="1" />
+                <xs:element name="ThreadPoolLogger"  type="xs:string"         minOccurs="0" maxOccurs="1" />
+                <xs:element name="QoSFile"           type="xs:string"         minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="DomainParticipant" type="DomainParticipant" minOccurs="0" maxOccurs="unbounded" />
+                <xs:element name="RandomiseAppId"    type="xs:boolean"        minOccurs="0" maxOccurs="1" />
             </xs:sequence>
         </xs:complexType>
     </xs:element>

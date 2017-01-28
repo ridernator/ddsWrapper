@@ -14,7 +14,7 @@ public class DDSSettings {
     private String LoggerName;
 
     @XmlElement
-    private Integer NumberOfThreads;
+    private int NumberOfThreads;
 
     @XmlElement
     private String ThreadPoolLogger;
@@ -26,7 +26,7 @@ public class DDSSettings {
     private List<DomainParticipant> DomainParticipant;
 
     @XmlElement
-    private Boolean RandomizeAppId;
+    private boolean RandomiseAppId;
 
     public List<DomainParticipant> getDomainParticipants() {
         if (DomainParticipant == null) {
@@ -40,7 +40,7 @@ public class DDSSettings {
         return LoggerName;
     }
 
-    public Integer getNumberOfThreads() {
+    public int getNumberOfThreads() {
         return NumberOfThreads;
     }
 
@@ -52,8 +52,8 @@ public class DDSSettings {
         return QoSFile;
     }
 
-    public boolean isRandomizeAppId() {
-        return RandomizeAppId;
+    public boolean isRandomiseAppId() {
+        return RandomiseAppId;
     }
 
     public String getThreadPoolLogger() {

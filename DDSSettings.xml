@@ -46,6 +46,14 @@
                 <NotificationType>Waitset</NotificationType>
                 <LoggerName>BigMessageReaderLogger</LoggerName>
             </Reader>
-        </Subscriber>        
+        </Subscriber>
+        
+        <Requester>
+            <LoggerName>Requester1Logger</LoggerName>
+            <RequestType>com.rider.ddswrapper.messages.LittleMessage</RequestType>
+            <ReplyType>com.rider.ddswrapper.messages.BigMessage</ReplyType>
+            <RequesterName>Requester1</RequesterName>
+            <ServiceName>myServiceName</ServiceName>
+        </Requester>
     </DomainParticipant>        
 </DDSSettings>

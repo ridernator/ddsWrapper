@@ -14,22 +14,12 @@ import com.rider.ddswrapper.types.ThreadPool;
 import com.rider.ddswrapper.types.Subscriber;
 import com.rider.ddswrapper.types.Writer;
 import java.io.File;
-import java.io.FileReader;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.validation.SchemaFactory;
 import org.apache.log4j.Logger;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
 
 /**
  *
@@ -44,7 +34,6 @@ public class DDSWrapper {
     private final HashMap<String, DomainParticipant> domainParticipants;
 
     private static class SingletonHolder {
-
         public static final DDSWrapper instance = new DDSWrapper();
 
     }
@@ -92,12 +81,12 @@ public class DDSWrapper {
                     logger = Logger.getLogger(ddsSettings.getLoggerName());
                     logger.info("\"" + xmlFileName + "\" parsed successfully");
 
-                    String receiveThreadPoolLoggerName = ddsSettings.getThreadPoolLogger();
-                    if (receiveThreadPoolLoggerName == null) {
-                        receiveThreadPoolLoggerName = ddsSettings.getLoggerName();
+                    String threadPoolLoggerName = ddsSettings.getThreadPoolLogger();
+                    if (threadPoolLoggerName == null) {
+                        threadPoolLoggerName = ddsSettings.getLoggerName();
                     }
 
-                    ThreadPool.init(ddsSettings.getNumberOfThreads(), Logger.getLogger(receiveThreadPoolLoggerName));
+                    ThreadPool.init(ddsSettings.getNumberOfThreads(), Logger.getLogger(threadPoolLoggerName));
 
                     createDomainParticipants(xmlFileName, ddsSettings);
 
@@ -213,7 +202,7 @@ public class DDSWrapper {
             if (domainParticipants.containsKey(domainParticipantXML.getDomainParticipantName())) {
                 logger.warn("\"" + xmlFileName + "\" contains multiple DomainParticipants called \"" + domainParticipantXML.getDomainParticipantName() + "\". Using only the first one");
             } else {
-                domainParticipants.put(domainParticipantXML.getDomainParticipantName(), new DomainParticipant(domainParticipantXML, logger));
+                domainParticipants.put(domainParticipantXML.getDomainParticipantName(), new DomainParticipant(domainParticipantXML, logger, ddsSettings.isRandomiseAppId()));
             }
         }
     }
