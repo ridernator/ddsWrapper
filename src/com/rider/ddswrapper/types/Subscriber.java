@@ -7,6 +7,7 @@ package com.rider.ddswrapper.types;
 import com.rti.dds.infrastructure.StatusKind;
 import com.rti.dds.subscription.SubscriberQos;
 import java.util.HashMap;
+import java.util.function.Consumer;
 import org.apache.log4j.Logger;
 
 /**
@@ -41,20 +42,20 @@ public class Subscriber {
         } else {
             final SubscriberQos subscriberQoS = new SubscriberQos();
             ddsSubscriber.get_qos(subscriberQoS);
-            for (final String partition : subscriberXML.getPartitionNames()) {
-                subscriberQoS.partition.name.add(partition);
-            }
+            
+            subscriberXML.getPartitionNames().stream().forEach(partition -> subscriberQoS.partition.name.add(partition));
+            
             ddsSubscriber.set_qos(subscriberQoS);
 
             logger.info("Created Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionNames() + "\")");
 
-            for (final com.rider.ddswrapper.configuration.Reader readerXML : subscriberXML.getReaders()) {
+            subscriberXML.getReaders().stream().forEach(readerXML -> {
                 if (readers.containsKey(readerXML.getReaderName())) {
                     logger.warn("Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + subscriberXML.getSubscriberName() + "\") contains multiple Readers called \"" + readerXML.getReaderName() + "\". Using only the first one");
                 } else {
-                    readers.put(readerXML.getReaderName(), new Reader(domainParticipant, this, readerXML, logger));
+                    readers.put(readerXML.getReaderName(), new Reader(domainParticipant, Subscriber.this, readerXML, logger));
                 }
-            }
+            });
         }
     }
 

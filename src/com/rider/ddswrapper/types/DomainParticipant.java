@@ -64,37 +64,37 @@ public class DomainParticipant {
         } else {
             logger.info("Created DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\",QoSLibrary=\"" + domainParticipantXML.getQoSLibrary() + "\",QoSProfile=\"" + domainParticipantXML.getQoSProfile() + "\")");
 
-            for (com.rider.ddswrapper.configuration.Publisher publisherXML : domainParticipantXML.getPublishers()) {
+            domainParticipantXML.getPublishers().stream().forEach(publisherXML -> {
                 if (publishers.containsKey(publisherXML.getPublisherName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Publishers called \"" + publisherXML.getPublisherName() + "\". Using only the first one");
                 } else {
                     publishers.put(publisherXML.getPublisherName(), new Publisher(this, publisherXML, logger));
                 }
-            }
+            });
 
-            for (com.rider.ddswrapper.configuration.Subscriber subscriberXML : domainParticipantXML.getSubscribers()) {
+            domainParticipantXML.getSubscribers().stream().forEach(subscriberXML -> {
                 if (subscribers.containsKey(subscriberXML.getSubscriberName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Subscribers called \"" + subscriberXML.getSubscriberName() + "\". Using only the first one");
                 } else {
                     subscribers.put(subscriberXML.getSubscriberName(), new Subscriber(this, subscriberXML, logger));
                 }
-            }
+            });
 
-            for (com.rider.ddswrapper.configuration.Requester requesterXML : domainParticipantXML.getRequesters()) {
+            domainParticipantXML.getRequesters().stream().forEach(requesterXML -> {
                 if (requesters.containsKey(requesterXML.getRequesterName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Requesters called \"" + requesterXML.getRequesterName() + "\". Using only the first one");
                 } else {
                     requesters.put(requesterXML.getRequesterName(), new Requester(this, requesterXML, logger));
                 }
-            }
+            });
 
-            for (com.rider.ddswrapper.configuration.Replier replierXML : domainParticipantXML.getRepliers()) {
+            domainParticipantXML.getRepliers().stream().forEach(replierXML -> {
                 if (repliers.containsKey(replierXML.getReplierName())) {
                     logger.warn("DomainParticipant (DomainParticipant=\"" + domainParticipantXML.getDomainParticipantName() + "\") contains multiple Repliers called \"" + replierXML.getReplierName() + "\". Using only the first one");
                 } else {
                     repliers.put(replierXML.getReplierName(), new Replier(this, replierXML, logger));
                 }
-            }
+            });
         }
     }
 
@@ -104,12 +104,12 @@ public class DomainParticipant {
 
         method.invoke(null, ddsDomainParticipant, typeName);
     }
-    
+
     public TypeSupportImpl getTypeSupport(final String typeName) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         final Class<?> clazz = Class.forName(typeName + "TypeSupport");
         final Method method = clazz.getDeclaredMethod("get_instance");
 
-        return (TypeSupportImpl)method.invoke(null);
+        return (TypeSupportImpl) method.invoke(null);
     }
 
     public Publisher getPublisher(final String publisherName) {

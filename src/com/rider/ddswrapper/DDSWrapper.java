@@ -198,22 +198,20 @@ public class DDSWrapper {
                                           final DDSSettings ddsSettings) {
         loadQoSFiles(ddsSettings.getQoSFiles());
 
-        for (final com.rider.ddswrapper.configuration.DomainParticipant domainParticipantXML : ddsSettings.getDomainParticipants()) {
+        ddsSettings.getDomainParticipants().stream().forEach(domainParticipantXML -> {
             if (domainParticipants.containsKey(domainParticipantXML.getDomainParticipantName())) {
                 logger.warn("\"" + xmlFileName + "\" contains multiple DomainParticipants called \"" + domainParticipantXML.getDomainParticipantName() + "\". Using only the first one");
             } else {
                 domainParticipants.put(domainParticipantXML.getDomainParticipantName(), new DomainParticipant(domainParticipantXML, logger, ddsSettings.isRandomiseAppId()));
             }
-        }
+        });
     }
 
     private void loadQoSFiles(final List<String> qosFiles) {
         final DomainParticipantFactoryQos factory_qos = new DomainParticipantFactoryQos();
         DomainParticipantFactory.get_instance().get_qos(factory_qos);
 
-        for (final String qosFile : qosFiles) {
-            factory_qos.profile.url_profile.add(qosFile);
-        }
+        qosFiles.stream().forEach(qosFile -> factory_qos.profile.url_profile.add(qosFile));
 
         DomainParticipantFactory.get_instance().set_qos(factory_qos);
     }

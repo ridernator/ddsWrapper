@@ -25,10 +25,13 @@ import org.apache.log4j.Logger;
 public class ReaderListener implements DataReaderListener {
 
     private final ArrayList<Listener> listeners;
+
     private final Logger logger;
+
     private final Class<?> type;
 
-    ReaderListener(final Class<?> type, final Logger logger) {
+    ReaderListener(final Class<?> type,
+                   final Logger logger) {
         listeners = new ArrayList<>();
         this.type = type;
         this.logger = logger;
@@ -47,66 +50,42 @@ public class ReaderListener implements DataReaderListener {
     }
 
     @Override
-    public void on_requested_deadline_missed(final DataReader reader, final RequestedDeadlineMissedStatus requestedDeadlineMissedStatus) {
+    public void on_requested_deadline_missed(final DataReader reader,
+                                             final RequestedDeadlineMissedStatus requestedDeadlineMissedStatus) {
         synchronized (listeners) {
-            for (final Listener listener : listeners) {
-                if (listener.isListeningForDeadlineMissed()) {
-                    ThreadPool.addTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.deadLineMissed(logger, reader, requestedDeadlineMissedStatus);
-                        }
-                    });
-                }
-            }
+            listeners.stream().filter(listener -> listener.isListeningForDeadlineMissed()).forEach(listener -> {
+                ThreadPool.addTask(() -> listener.deadLineMissed(logger, reader, requestedDeadlineMissedStatus));
+            });
         }
     }
 
     @Override
-    public void on_requested_incompatible_qos(final DataReader reader, final RequestedIncompatibleQosStatus requestedIncompatibleQosStatus) {
+    public void on_requested_incompatible_qos(final DataReader reader,
+                                              final RequestedIncompatibleQosStatus requestedIncompatibleQosStatus) {
         synchronized (listeners) {
-            for (final Listener listener : listeners) {
-                if (listener.isListeningForDeadlineMissed()) {
-                    ThreadPool.addTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.incompatibleQoS(logger, reader, requestedIncompatibleQosStatus);
-                        }
-                    });
-                }
-            }
+            listeners.stream().filter(listener -> listener.isListeningForDeadlineMissed()).forEach(listener -> {
+                ThreadPool.addTask(() -> listener.incompatibleQoS(logger, reader, requestedIncompatibleQosStatus));
+            });
         }
     }
 
     @Override
-    public void on_sample_rejected(final DataReader reader, final SampleRejectedStatus sampleRejectedStatus) {
+    public void on_sample_rejected(final DataReader reader,
+                                   final SampleRejectedStatus sampleRejectedStatus) {
         synchronized (listeners) {
-            for (final Listener listener : listeners) {
-                if (listener.isListeningForDeadlineMissed()) {
-                    ThreadPool.addTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.sampleRejected(logger, reader, sampleRejectedStatus);
-                        }
-                    });
-                }
-            }
+            listeners.stream().filter(listener -> listener.isListeningForDeadlineMissed()).forEach(listener -> {
+                ThreadPool.addTask(() -> listener.sampleRejected(logger, reader, sampleRejectedStatus));
+            });
         }
     }
 
     @Override
-    public void on_liveliness_changed(final DataReader reader, final LivelinessChangedStatus livelinessChangedStatus) {
+    public void on_liveliness_changed(final DataReader reader,
+                                      final LivelinessChangedStatus livelinessChangedStatus) {
         synchronized (listeners) {
-            for (final Listener listener : listeners) {
-                if (listener.isListeningForDeadlineMissed()) {
-                    ThreadPool.addTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.livelinessChanged(logger, reader, livelinessChangedStatus);
-                        }
-                    });
-                }
-            }
+            listeners.stream().filter(listener -> listener.isListeningForDeadlineMissed()).forEach(listener -> {
+                ThreadPool.addTask(() -> listener.livelinessChanged(logger, reader, livelinessChangedStatus));
+            });
         }
     }
 
@@ -122,14 +101,9 @@ public class ReaderListener implements DataReaderListener {
 
                 if (sampleInfo.valid_data) {
                     synchronized (listeners) {
-                        for (final Listener listener : listeners) {
-                            ThreadPool.addTask(new Runnable() {
-                                @Override
-                                public void run() {
-                                    listener.newData(logger, sample);
-                                }
-                            });
-                        }
+                        listeners.stream().forEach(listener -> {
+                            ThreadPool.addTask(() -> listener.newData(logger, sample));
+                        });
                     }
                 } else {
                     logger.warn("Received invalid data");
@@ -145,34 +119,22 @@ public class ReaderListener implements DataReaderListener {
     }
 
     @Override
-    public void on_sample_lost(final DataReader reader, final SampleLostStatus sampleLostStatus) {
+    public void on_sample_lost(final DataReader reader,
+                               final SampleLostStatus sampleLostStatus) {
         synchronized (listeners) {
-            for (final Listener listener : listeners) {
-                if (listener.isListeningForDeadlineMissed()) {
-                    ThreadPool.addTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.sampleLost(logger, reader, sampleLostStatus);
-                        }
-                    });
-                }
-            }
+            listeners.stream().filter(listener -> listener.isListeningForDeadlineMissed()).forEach(listener -> {
+                ThreadPool.addTask(() -> listener.sampleLost(logger, reader, sampleLostStatus));
+            });
         }
     }
 
     @Override
-    public void on_subscription_matched(final DataReader reader, final SubscriptionMatchedStatus subscriptionMatchedStatus) {
+    public void on_subscription_matched(final DataReader reader,
+                                        final SubscriptionMatchedStatus subscriptionMatchedStatus) {
         synchronized (listeners) {
-            for (final Listener listener : listeners) {
-                if (listener.isListeningForDeadlineMissed()) {
-                    ThreadPool.addTask(new Runnable() {
-                        @Override
-                        public void run() {
-                            listener.subscriptionMatched(logger, reader, subscriptionMatchedStatus);
-                        }
-                    });
-                }
-            }
+            listeners.stream().filter(listener -> listener.isListeningForDeadlineMissed()).forEach(listener -> {
+                ThreadPool.addTask(() -> listener.subscriptionMatched(logger, reader, subscriptionMatchedStatus));
+            });
         }
     }
 }

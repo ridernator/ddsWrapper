@@ -35,21 +35,20 @@ public class Publisher {
             logger.error("Error creating Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\",QoSLibrary=\"" + publisherXML.getQoSLibrary() + "\",QoSProfile=\"" + publisherXML.getQoSProfile() + "\",Partitions=\""+publisherXML.getPartitionName()+"\")");
         } else {
             final PublisherQos publisherQoS = new PublisherQos();
+            
             ddsPublisher.get_qos(publisherQoS);
-            for (final String partition : publisherXML.getPartitionName()) {
-                publisherQoS.partition.name.add(partition);
-            }            
+            publisherXML.getPartitionName().stream().forEach(partition -> publisherQoS.partition.name.add(partition));            
             ddsPublisher.set_qos(publisherQoS);
             
             logger.info("Created Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\",QoSLibrary=\"" + publisherXML.getQoSLibrary() + "\",QoSProfile=\"" + publisherXML.getQoSProfile() + "\",Partitions=\""+publisherXML.getPartitionName()+"\")");
 
-            for (final com.rider.ddswrapper.configuration.Writer writerXML : publisherXML.getWriter()) {
+            publisherXML.getWriter().stream().forEach(writerXML -> {
                 if (writers.containsKey(writerXML.getWriterName())) {
                     logger.warn("Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\") contains multiple Writers called \"" + writerXML.getWriterName() + "\". Using only the first one");
                 } else {
                     writers.put(writerXML.getWriterName(), new Writer(domainParticipant, this, writerXML, logger));
                 }
-            }
+            });
         }
     }
 
