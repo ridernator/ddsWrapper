@@ -53,6 +53,7 @@ public class Reader {
 
             logger.info("Registered type (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriber.getName() + "\",Reader=\"" + readerXML.getReaderName() + "\",Type=\"" + readerXML.getTypeName() + "\")");
 
+            // TODO : Should this be 0 or not
             Topic topic = domainParticipant.getDDSDomainParticipant().find_topic(readerXML.getTopicName(), new Duration_t(0, 0));
 
             if (topic == null) {

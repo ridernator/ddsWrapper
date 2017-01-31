@@ -21,7 +21,6 @@ public class Writer {
 
     private DataWriter ddsWriter;
     private final Logger logger;
-    private final Duration_t infiniteWait;
     private final DomainParticipant domainParticipant;
     private final Publisher publisher;
     private final com.rider.ddswrapper.configuration.Writer writerXML;
@@ -34,7 +33,6 @@ public class Writer {
         }
 
         ddsWriter = null;
-        infiniteWait = new Duration_t(Duration_t.DURATION_INFINITE_SEC, Duration_t.DURATION_INFINITE_NSEC);
         this.domainParticipant = domainParticipant;
         this.publisher = publisher;
         this.writerXML = writerXML;
@@ -44,6 +42,7 @@ public class Writer {
 
             logger.info("Registered type (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisher.getName() + "\",Writer=\"" + writerXML.getWriterName()+ "\",Type=\"" + writerXML.getTypeName() + "\")");
 
+            // TODO : Should this be 0 or not
             Topic topic = domainParticipant.getDDSDomainParticipant().find_topic(writerXML.getTopicName(), new Duration_t(0, 0));
 
             if (topic == null) {
@@ -72,15 +71,11 @@ public class Writer {
         }
     }
 
-    public boolean write(final Object data, final boolean blocking) {
+    public boolean write(final Object data) {
         boolean returnVal = true;
 
         try {
             ddsWriter.write_untyped(data, InstanceHandle_t.HANDLE_NIL);
-
-            if (blocking) {
-                ddsWriter.wait_for_asynchronous_publishing(infiniteWait);
-            }
 
             if (logger.isTraceEnabled()) {
                 logger.trace("Wrote data (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisher.getName() + "\",Writer=\"" + getName() + "\",QoSLibrary=\"" + writerXML.getQoSLibrary() + "\",QoSProfile=\"" + writerXML.getQoSProfile() + "\",Topic=\"" + writerXML.getTopicName() + "\",Type=\"" + writerXML.getTypeName() + "\")");
@@ -92,10 +87,6 @@ public class Writer {
         }
 
         return returnVal;
-    }
-
-    public boolean write(final Object data) {
-        return write(data, false);
     }
 
     public String getName() {
