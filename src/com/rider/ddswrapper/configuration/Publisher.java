@@ -30,7 +30,7 @@ public class Publisher {
         return LoggerName;
     }
 
-    public List<String> getPartitionName() {
+    public List<String> getPartitionNames() {
         if (PartitionName == null) {
             PartitionName = new ArrayList<>();
         }

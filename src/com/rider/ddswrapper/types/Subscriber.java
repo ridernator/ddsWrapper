@@ -40,12 +40,14 @@ public class Subscriber {
         if (ddsSubscriber == null) {
             logger.error("Error creating Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionNames() + "\")");
         } else {
-            final SubscriberQos subscriberQoS = new SubscriberQos();
-            ddsSubscriber.get_qos(subscriberQoS);
-            
-            subscriberXML.getPartitionNames().stream().forEach(partition -> subscriberQoS.partition.name.add(partition));
-            
-            ddsSubscriber.set_qos(subscriberQoS);
+            if (!subscriberXML.getPartitionNames().isEmpty()) {
+                final SubscriberQos subscriberQoS = new SubscriberQos();
+                ddsSubscriber.get_qos(subscriberQoS);
+
+                subscriberXML.getPartitionNames().stream().forEach(partition -> subscriberQoS.partition.name.add(partition));
+
+                ddsSubscriber.set_qos(subscriberQoS);
+            }
 
             logger.info("Created Subscriber (DomainParticipant=\"" + domainParticipant.getName() + "\",Subscriber=\"" + subscriberXML.getSubscriberName() + "\",QoSLibrary=\"" + subscriberXML.getQoSLibrary() + "\",QoSProfile=\"" + subscriberXML.getQoSProfile() + "\",Partitions=\"" + subscriberXML.getPartitionNames() + "\")");
 

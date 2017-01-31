@@ -16,11 +16,16 @@ import org.apache.log4j.Logger;
 public class Publisher {
 
     private final com.rti.dds.publication.Publisher ddsPublisher;
+
     private final Logger logger;
+
     private final HashMap<String, Writer> writers;
+
     private final String name;
 
-    Publisher(final DomainParticipant domainParticipant, final com.rider.ddswrapper.configuration.Publisher publisherXML, final Logger defaultLogger) {
+    Publisher(final DomainParticipant domainParticipant,
+              final com.rider.ddswrapper.configuration.Publisher publisherXML,
+              final Logger defaultLogger) {
         if (publisherXML.getLoggerName() == null) {
             logger = defaultLogger;
         } else {
@@ -32,15 +37,17 @@ public class Publisher {
         ddsPublisher = domainParticipant.getDDSDomainParticipant().create_publisher_with_profile(publisherXML.getQoSLibrary(), publisherXML.getQoSProfile(), null, StatusKind.STATUS_MASK_NONE);
 
         if (ddsPublisher == null) {
-            logger.error("Error creating Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\",QoSLibrary=\"" + publisherXML.getQoSLibrary() + "\",QoSProfile=\"" + publisherXML.getQoSProfile() + "\",Partitions=\""+publisherXML.getPartitionName()+"\")");
+            logger.error("Error creating Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\",QoSLibrary=\"" + publisherXML.getQoSLibrary() + "\",QoSProfile=\"" + publisherXML.getQoSProfile() + "\",Partitions=\"" + publisherXML.getPartitionNames() + "\")");
         } else {
-            final PublisherQos publisherQoS = new PublisherQos();
-            
-            ddsPublisher.get_qos(publisherQoS);
-            publisherXML.getPartitionName().stream().forEach(partition -> publisherQoS.partition.name.add(partition));            
-            ddsPublisher.set_qos(publisherQoS);
-            
-            logger.info("Created Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\",QoSLibrary=\"" + publisherXML.getQoSLibrary() + "\",QoSProfile=\"" + publisherXML.getQoSProfile() + "\",Partitions=\""+publisherXML.getPartitionName()+"\")");
+            if (!publisherXML.getPartitionNames().isEmpty()) {
+                final PublisherQos publisherQoS = new PublisherQos();
+
+                ddsPublisher.get_qos(publisherQoS);
+                publisherXML.getPartitionNames().stream().forEach(partition -> publisherQoS.partition.name.add(partition));
+                ddsPublisher.set_qos(publisherQoS);
+            }
+
+            logger.info("Created Publisher (DomainParticipant=\"" + domainParticipant.getName() + "\",Publisher=\"" + publisherXML.getPublisherName() + "\",QoSLibrary=\"" + publisherXML.getQoSLibrary() + "\",QoSProfile=\"" + publisherXML.getQoSProfile() + "\",Partitions=\"" + publisherXML.getPartitionNames() + "\")");
 
             publisherXML.getWriter().stream().forEach(writerXML -> {
                 if (writers.containsKey(writerXML.getWriterName())) {
