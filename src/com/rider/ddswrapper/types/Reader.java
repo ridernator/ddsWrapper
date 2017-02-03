@@ -4,13 +4,13 @@
  */
 package com.rider.ddswrapper.types;
 
+import com.rider.ddswrapper.configuration.NotificationType;
 import com.rti.dds.infrastructure.Duration_t;
 import com.rti.dds.infrastructure.StatusCondition;
 import com.rti.dds.infrastructure.StatusKind;
 import com.rti.dds.infrastructure.WaitSet;
 import com.rti.dds.subscription.DataReader;
 import com.rti.dds.topic.Topic;
-import com.rider.ddswrapper.configuration.NotificationType;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.log4j.Logger;
 

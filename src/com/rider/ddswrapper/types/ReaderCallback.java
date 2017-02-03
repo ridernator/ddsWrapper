@@ -8,7 +8,7 @@ package com.rider.ddswrapper.types;
  *
  * @author ridernator
  */
-public enum Callback {
+public enum ReaderCallback {
     ALL,
     DEADLINE_MISSED,
     INCOMPATIBLE_QOS,

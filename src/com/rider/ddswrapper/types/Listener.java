@@ -31,7 +31,7 @@ public abstract class Listener {
 
     private boolean listeningForSubscriptionMatched;
 
-    public Listener(final Callback... callbacks) {
+    public Listener(final ReaderCallback... callbacks) {
         listeningForDeadlineMissed = false;
         listeningForIncompatibleStatus = false;
         listeningForLivelinessChanged = false;
@@ -39,7 +39,7 @@ public abstract class Listener {
         listeningForSampleRejected = false;
         listeningForSubscriptionMatched = false;
 
-        for (final Callback callback : callbacks) {
+        for (final ReaderCallback callback : callbacks) {
             switch (callback) {
                 case DEADLINE_MISSED: {
                     listeningForDeadlineMissed = true;

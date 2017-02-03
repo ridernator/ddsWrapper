@@ -57,6 +57,8 @@ public class DomainParticipant {
             dpQos.wire_protocol.rtps_app_id = (int) (Math.random() * Integer.MAX_VALUE);
         }
 
+        dpQos.participant_name.name = domainParticipantXML.getDomainParticipantName();
+
         ddsDomainParticipant = DomainParticipantFactory.get_instance().create_participant(domainParticipantXML.getDomainId(), dpQos, null, StatusKind.STATUS_MASK_NONE);
 
         if (ddsDomainParticipant == null) {

@@ -21,6 +21,9 @@ public class Requester {
     @XmlElement(required = true)
     private String ServiceName;
 
+    @XmlElement
+    private int TimeOut;
+
     public String getLoggerName() {
         return LoggerName;
     }
@@ -40,4 +43,8 @@ public class Requester {
     public String getServiceName() {
         return ServiceName;
     }
+
+    public int getTimeOut() {
+        return TimeOut;
+    }    
 }

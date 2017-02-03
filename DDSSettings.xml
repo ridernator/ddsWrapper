@@ -54,6 +54,16 @@
             <ReplyType>com.rider.ddswrapper.messages.BigMessage</ReplyType>
             <RequesterName>Requester1</RequesterName>
             <ServiceName>myServiceName</ServiceName>
+            <TimeOut>1000</TimeOut>
         </Requester>
+        
+        <Replier>
+            <LoggerName>Replier1Logger</LoggerName>
+            <RequestType>com.rider.ddswrapper.messages.LittleMessage</RequestType>
+            <ReplyType>com.rider.ddswrapper.messages.BigMessage</ReplyType>
+            <ReplierName>Replier1</ReplierName>
+            <ServiceName>myServiceName</ServiceName>
+            <TimeOut>1000</TimeOut>
+        </Replier>
     </DomainParticipant>        
 </DDSSettings>

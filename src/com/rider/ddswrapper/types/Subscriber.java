@@ -7,7 +7,6 @@ package com.rider.ddswrapper.types;
 import com.rti.dds.infrastructure.StatusKind;
 import com.rti.dds.subscription.SubscriberQos;
 import java.util.HashMap;
-import java.util.function.Consumer;
 import org.apache.log4j.Logger;
 
 /**
@@ -42,10 +41,9 @@ public class Subscriber {
         } else {
             if (!subscriberXML.getPartitionNames().isEmpty()) {
                 final SubscriberQos subscriberQoS = new SubscriberQos();
+                
                 ddsSubscriber.get_qos(subscriberQoS);
-
                 subscriberXML.getPartitionNames().stream().forEach(partition -> subscriberQoS.partition.name.add(partition));
-
                 ddsSubscriber.set_qos(subscriberQoS);
             }
 

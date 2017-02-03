@@ -1,16 +1,61 @@
 package com.rider.ddswrapper.types;
 
+import com.rti.connext.infrastructure.Sample;
+import com.rti.connext.infrastructure.WriteSample;
+import com.rti.dds.infrastructure.Duration_t;
+import java.lang.reflect.InvocationTargetException;
 import org.apache.log4j.Logger;
 
 /**
  *
  * @author Ciaron Rider
  */
-public class Replier {
+public class Replier extends Thread {
+    private final Logger logger;
 
-    Replier(DomainParticipant aThis,
-            com.rider.ddswrapper.configuration.Replier replierXML,
-            Logger logger) {
+    private com.rti.connext.requestreply.Replier<?, ?> ddsReplier;
+
+    private final Duration_t timeout;
+
+    private final String replierLoggingName;
+
+    Replier(final DomainParticipant domainParticipant,
+            final com.rider.ddswrapper.configuration.Replier replierXML,
+            final Logger defaultLogger) {
+        if (replierXML.getLoggerName() == null) {
+            logger = defaultLogger;
+        } else {
+            logger = Logger.getLogger(replierXML.getLoggerName());
+        }
+
+        ddsReplier = null;
+        timeout = new Duration_t(1, Duration_t.DURATION_ZERO_NSEC);
+        replierLoggingName = "(DomainParticipant=\"" + domainParticipant.getName() + "\",Replier=\"" + replierXML.getReplierName() + "\",RequestType=\"" + replierXML.getRequestType() + "\",ReplyType=\"" + replierXML.getReplyType() + "\",ServiceName=\"" + replierXML.getServiceName() + "\")";
+
+        try {
+            ddsReplier = new com.rti.connext.requestreply.Replier(domainParticipant.getDDSDomainParticipant(), replierXML.getServiceName(), domainParticipant.getTypeSupport(replierXML.getRequestType()), domainParticipant.getTypeSupport(replierXML.getReplyType()));
+
+            logger.info("Created Replier " + replierLoggingName);
+        } catch (final ClassNotFoundException | NoSuchMethodException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+            logger.error("Error creating Replier " + replierLoggingName + " : " + exception.toString());
+        }
+
+        start();
     }
 
+    @Override
+    public void run() {
+        final Sample request = ddsReplier.createRequestSample();
+
+        while (true) {
+            if (ddsReplier.receiveRequest(request, timeout)) {
+                if (request.getInfo().valid_data) {
+                    final WriteSample reply = ddsReplier.createReplySample();
+                    ddsReplier.sendReply(reply, request.getIdentity());
+                } else {
+                    logger.warn("Invalid data received");
+                }
+            }
+        }
+    }
 }

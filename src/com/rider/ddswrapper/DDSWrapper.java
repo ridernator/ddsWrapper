@@ -5,14 +5,16 @@
 package com.rider.ddswrapper;
 
 import com.rider.ddswrapper.configuration.DDSSettings;
-import com.rti.dds.domain.DomainParticipantFactory;
-import com.rti.dds.domain.DomainParticipantFactoryQos;
 import com.rider.ddswrapper.types.DomainParticipant;
 import com.rider.ddswrapper.types.Publisher;
 import com.rider.ddswrapper.types.Reader;
-import com.rider.ddswrapper.types.ThreadPool;
+import com.rider.ddswrapper.types.Replier;
+import com.rider.ddswrapper.types.Requester;
 import com.rider.ddswrapper.types.Subscriber;
+import com.rider.ddswrapper.types.ThreadPool;
 import com.rider.ddswrapper.types.Writer;
+import com.rti.dds.domain.DomainParticipantFactory;
+import com.rti.dds.domain.DomainParticipantFactoryQos;
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
@@ -154,6 +156,44 @@ public class DDSWrapper {
         return returnVal;
     }
 
+    public Requester getRequester(final String domainParticipantName,
+                                  final String requesterName) {
+        Requester returnVal = null;
+
+        if (initComplete) {
+            final DomainParticipant domainParticipant = getDomainParticipant(domainParticipantName);
+
+            if (domainParticipant == null) {
+                logger.warn("Cannot get Requester (DomainParticipant=\"" + domainParticipantName + "\",Requester=\"" + requesterName + "\") as Domain Participant (\"" + domainParticipantName + "\") does not exist");
+            } else {
+                returnVal = domainParticipant.getRequester(requesterName);
+            }
+        } else {
+            logger.warn("Cannot get Requester (DomainParticipant=\"" + domainParticipantName + "\",Requester=\"" + requesterName + "\") as startup() has not been called or is not complete");
+        }
+
+        return returnVal;
+    }
+
+    public Replier getReplier(final String domainParticipantName,
+                              final String replierName) {
+        Replier returnVal = null;
+
+        if (initComplete) {
+            final DomainParticipant domainParticipant = getDomainParticipant(domainParticipantName);
+
+            if (domainParticipant == null) {
+                logger.warn("Cannot get Requester (DomainParticipant=\"" + domainParticipantName + "\",Requester=\"" + replierName + "\") as Domain Participant (\"" + domainParticipantName + "\") does not exist");
+            } else {
+                returnVal = domainParticipant.getReplier(replierName);
+            }
+        } else {
+            logger.warn("Cannot get Requester (DomainParticipant=\"" + domainParticipantName + "\",Requester=\"" + replierName + "\") as startup() has not been called or is not complete");
+        }
+
+        return returnVal;
+    }
+
     public Reader getReader(final String domainParticipantName,
                             final String subscriberName,
                             final String readerName) {
@@ -215,4 +255,6 @@ public class DDSWrapper {
 
         DomainParticipantFactory.get_instance().set_qos(factory_qos);
     }
+
+    // TODO : createDomainParticipant()
 }
