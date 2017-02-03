@@ -138,4 +138,10 @@ public class DomainParticipant {
         return name;
     }
 
+    public void shutdown() {
+        repliers.values().stream().forEach(replier -> replier.shutdown());
+        ddsDomainParticipant.delete_contained_entities();
+        DomainParticipantFactory.TheParticipantFactory.delete_participant(ddsDomainParticipant);
+    }
+
 }

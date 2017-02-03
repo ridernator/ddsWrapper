@@ -19,6 +19,8 @@ public class Replier extends Thread {
 
     private final String replierLoggingName;
 
+    private boolean shouldStop;
+
     Replier(final DomainParticipant domainParticipant,
             final com.rider.ddswrapper.configuration.Replier replierXML,
             final Logger defaultLogger) {
@@ -28,6 +30,7 @@ public class Replier extends Thread {
             logger = Logger.getLogger(replierXML.getLoggerName());
         }
 
+        shouldStop = false;
         ddsReplier = null;
         timeout = new Duration_t(1, Duration_t.DURATION_ZERO_NSEC);
         replierLoggingName = "(DomainParticipant=\"" + domainParticipant.getName() + "\",Replier=\"" + replierXML.getReplierName() + "\",RequestType=\"" + replierXML.getRequestType() + "\",ReplyType=\"" + replierXML.getReplyType() + "\",ServiceName=\"" + replierXML.getServiceName() + "\")";
@@ -47,7 +50,7 @@ public class Replier extends Thread {
     public void run() {
         final Sample request = ddsReplier.createRequestSample();
 
-        while (true) {
+        while (!shouldStop) {
             if (ddsReplier.receiveRequest(request, timeout)) {
                 if (request.getInfo().valid_data) {
                     final WriteSample reply = ddsReplier.createReplySample();
@@ -57,5 +60,9 @@ public class Replier extends Thread {
                 }
             }
         }
+    }
+
+    public void shutdown() {
+        shouldStop = true;
     }
 }

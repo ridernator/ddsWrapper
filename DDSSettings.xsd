@@ -60,7 +60,7 @@
             <xs:element name="RequestType"   type="xs:string" minOccurs="1" maxOccurs="1" />
             <xs:element name="ReplyType"     type="xs:string" minOccurs="1" maxOccurs="1" />
             <xs:element name="ServiceName"   type="xs:string" minOccurs="1" maxOccurs="1" />
-            <xs:element name="TimeOut"       type="xs:int"    minOccurs="0" maxOccurs="1" />
+            <xs:element name="TimeOut"       type="xs:long"    minOccurs="0" maxOccurs="1" />
         </xs:sequence>
     </xs:complexType>
         

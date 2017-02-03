@@ -63,7 +63,6 @@
             <ReplyType>com.rider.ddswrapper.messages.BigMessage</ReplyType>
             <ReplierName>Replier1</ReplierName>
             <ServiceName>myServiceName</ServiceName>
-            <TimeOut>1000</TimeOut>
         </Replier>
     </DomainParticipant>        
 </DDSSettings>

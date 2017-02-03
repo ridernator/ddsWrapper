@@ -22,7 +22,7 @@ public class Requester {
     private String ServiceName;
 
     @XmlElement
-    private int TimeOut;
+    private Long TimeOut;
 
     public String getLoggerName() {
         return LoggerName;
@@ -44,7 +44,7 @@ public class Requester {
         return ServiceName;
     }
 
-    public int getTimeOut() {
+    public Long getTimeOut() {
         return TimeOut;
     }    
 }

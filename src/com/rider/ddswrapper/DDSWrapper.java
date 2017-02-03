@@ -50,8 +50,7 @@ public class DDSWrapper {
                 SingletonHolder.instance.initComplete = false;
 
                 for (final DomainParticipant domainParticipant : SingletonHolder.instance.domainParticipants.values()) {
-                    domainParticipant.getDDSDomainParticipant().delete_contained_entities();
-                    DomainParticipantFactory.TheParticipantFactory.delete_participant(domainParticipant.getDDSDomainParticipant());
+                    domainParticipant.shutdown();
                 }
 
                 SingletonHolder.instance.domainParticipants.clear();

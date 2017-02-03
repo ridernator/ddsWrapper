@@ -61,7 +61,7 @@ public class Main {
         
         System.out.println(bigMessage);
         
-        Thread.sleep(10000);
+        Thread.sleep(5000);
 
         DDSWrapper.shutdown();
         
