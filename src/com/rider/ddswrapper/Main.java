@@ -7,6 +7,7 @@ package com.rider.ddswrapper;
 import com.rider.ddswrapper.messages.BigMessage;
 import com.rider.ddswrapper.messages.LittleMessage;
 import com.rider.ddswrapper.types.Replier;
+import com.rider.ddswrapper.types.ReplierAction;
 import com.rider.ddswrapper.types.Requester;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -54,6 +55,16 @@ public class Main {
         
         Requester requester =  DDSWrapper.getInstance().getRequester("DomainParticipant1", "Requester1");
         Replier replier =  DDSWrapper.getInstance().getReplier("DomainParticipant1", "Replier1");
+        replier.setAction(new ReplierAction<LittleMessage, BigMessage>() {
+
+            @Override
+            public BigMessage process(final LittleMessage request) {
+                BigMessage reply = new BigMessage();
+                reply.data[0]=123;
+                
+                return reply;
+            }
+        });
         
         LittleMessage littleMessage = new LittleMessage();
         

@@ -48,11 +48,7 @@ public class DDSWrapper {
         synchronized (SingletonHolder.instance) {
             if (SingletonHolder.instance.initComplete) {
                 SingletonHolder.instance.initComplete = false;
-
-                for (final DomainParticipant domainParticipant : SingletonHolder.instance.domainParticipants.values()) {
-                    domainParticipant.shutdown();
-                }
-
+                SingletonHolder.instance.domainParticipants.values().stream().forEach(domainParticipant -> domainParticipant.shutdown());
                 SingletonHolder.instance.domainParticipants.clear();
             } else {
                 System.err.println("Cannot destroy DDSWrapper before it is initialized");
