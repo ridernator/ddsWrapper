@@ -43,7 +43,7 @@ public class Subscriber {
                 final SubscriberQos subscriberQoS = new SubscriberQos();
                 
                 ddsSubscriber.get_qos(subscriberQoS);
-                subscriberXML.getPartitionNames().stream().forEach(partition -> subscriberQoS.partition.name.add(partition));
+                subscriberXML.getPartitionNames().stream().forEach(partitionName -> subscriberQoS.partition.name.add(partitionName));
                 ddsSubscriber.set_qos(subscriberQoS);
             }
 
